@@ -18,9 +18,16 @@ exports.create = (req,res) => {
         participantes : [],
         juego : req.body.juego,
         fecha: req.body.fecha,
+        premio: req.body.premio,
+        max: req.body.max,
     });
     nuevo.save()
     res.send(req.body)
+}
+exports.deleteID = (req,res) => {
+    Torneo.findByIdAndDelete(req.params.id,(err,docs) => {
+        res.send(docs)
+    })
 }
 exports.updateParticipante = (req,res) => {
     let participante = {

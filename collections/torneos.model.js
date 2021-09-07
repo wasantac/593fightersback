@@ -3,7 +3,9 @@ const tonreoSchema = new mongoose.Schema({
     titulo: String,
     descripcion: String,
     participantes:[],
-    juego: String
+    juego: String,
+    fecha: Date,
+    max: Number,
 },{timestamps:true})
 
 module.exports = mongoose.model('torneos',tonreoSchema);

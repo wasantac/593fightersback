@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var Torneo = require("../collections/torneos.model");
 
 exports.findAll = (req,res) => {
-    Torneo.find({},(err,docs) =>{
+    Torneo.find({},'titulo descripcion fecha').sort('-fecha').exec((err,docs) =>{
         res.send(docs)
     })
 }
@@ -17,6 +17,7 @@ exports.create = (req,res) => {
         descripcion : req.body.descripcion,
         participantes : [],
         juego : req.body.juego,
+        fecha: req.body.fecha,
     });
     nuevo.save()
     res.send(req.body)

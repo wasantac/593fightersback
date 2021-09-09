@@ -15,11 +15,19 @@ var usersRouter = require('./routes/users');
 var torneoRouter = require('./routes/torneos.routes');
 var loginRouter = require('./routes/login.router');
 var app = express();
-
+const whitelist = ['https://593fighters.netlify.app/','http://localhost:3000'];
 const nodb = require('./collections');
 app.use(cors({
-  origin: ['https://593fighters.netlify.app/*','http://localhost:3000'],
+  origin: function(origin,callback){
+    if(whitelist.indexOf(origin) !== -1){
+      callback(null,true)
+    }
+    else{
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   credentials:true,
+  methods: "GET,PUT,POST,DELETE"
 })); 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,7 +47,6 @@ app.use(passport.session());
 const inititializePassport = require('./passport-config')
 inititializePassport.initialize(passport);
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/torneos',torneoRouter);

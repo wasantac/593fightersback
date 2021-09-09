@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const passport = require("passport");
 const cors = require("cors");
 
@@ -41,6 +42,10 @@ app.use(session({
   secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.DB_CONNECTION_URL,
+    dbName: 'fighterdb'
+  })
 }))
 app.use(passport.initialize());
 app.use(passport.session());

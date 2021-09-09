@@ -1,6 +1,8 @@
 
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
+const JWTStrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
 var User = require("./collections/user.model");
 exports.initialize = (passport) => {
     authenticadedUser = async (user,password,done) => {
@@ -13,15 +15,19 @@ exports.initialize = (passport) => {
                 return done(null,docs)
             }
             
-            return done(null,docs)
+            return done(null,false,{message: "No se encontro al usuario."})
         })
 
     }
-    passport.use(new LocalStrategy(authenticadedUser));
-    passport.serializeUser((user,done) =>{done(null,user._id)});
-    passport.deserializeUser((id,done) =>{
-        User.findById(id,(err,docs) => {
-            done(err,docs)
-        })
-    });
+    passport.use('login',new LocalStrategy(authenticadedUser));
+    passport.use('jwt',new JWTStrategy({
+        secretOrKey: process.env.SECRET,
+        jwtFromRequest: ExtractJWT.fromUrlQueryParameter('token')
+    },async (token,done) =>{
+        try{
+            return done(null,token.user)
+        }catch(e){
+            done(e)
+        }
+    }))
 }

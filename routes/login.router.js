@@ -1,32 +1,37 @@
 var express = require('express');
 var router = express.Router();
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const userController = require('../controllers/user.controller');
+
 /* GET users listing. */
 
-router.post('/',
-  passport.authenticate('local'),
-  function(req, res) {
-    res.send(req.user);
+router.post('/',async(req, res,next)=> {
+  passport.authenticate('login', async (err,user,info) =>{
+    
+    try{
+      if(err || !user){
+        return next(new Error(err))
+      }
+      req.login(user,{session:false},async (err) => {
+        if(err) return next(err)
+        const body = {_id: user._id}
+        const token = jwt.sign({user: body},process.env.SECRET);
+        return res.json({token})
+      })
+    }
+    catch(e){
+      return next(e)
+    }
+  })(req,res,next)
   });
-router.get('/logout',function(req, res){
-  if (req.user) {
-    req.session.destroy()
-    res.clearCookie('connect.sid') // clean up!
-    return res.json({ msg: 'logging you out' })
-  } else {
-    return res.json({ msg: 'no user to log out!' })
-  }
-  });
+router.post('/registro',userController.create);
 
-router.get('/',function(req, res){
-  res.set('Content-Type', 'text/plain');
-  if(req.user){
-    res.status(200).json({data:true});
-  }
-  else{
-    res.status(200).json({data:false});
-  }
-  
+router.get('/profile',passport.authenticate('jwt',{session:false}),(req,res,next) =>{
+  res.json({
+    user: req.user,
+    token: req.query.token
+  })
 })
 
 module.exports = router;

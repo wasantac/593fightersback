@@ -1,11 +1,12 @@
 var User = require("../collections/user.model");
-
+const bcrypt = require('bcrypt')
 exports.findAll= (req,res) => {
     User.find({},(err,docs) => {
         res.send(docs);
     })
 }
 exports.create = async (req,res) => {
+    console.log(req.body)
     try{
     const hash = await bcrypt.hash(req.body.password,10)
     

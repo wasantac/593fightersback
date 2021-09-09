@@ -15,7 +15,7 @@ var usersRouter = require('./routes/users');
 var torneoRouter = require('./routes/torneos.routes');
 var loginRouter = require('./routes/login.router');
 var app = express();
-const whitelist = ['https://593fighters.netlify.app/','http://localhost:3000'];
+const whitelist = ['https://593fighters.netlify.app','http://localhost:3000'];
 const nodb = require('./collections');
 app.use(cors({
   origin: function(origin,callback){

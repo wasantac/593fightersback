@@ -18,7 +18,7 @@ var app = express();
 
 const nodb = require('./collections');
 app.use(cors({
-  origin: ['https://593fighters.netlify.app/','http://localhost:3000'],
+  origin: ['https://593fighters.netlify.app/*','http://localhost:3000'],
   credentials:true,
 })); 
 // view engine setup

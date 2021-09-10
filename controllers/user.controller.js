@@ -31,10 +31,19 @@ exports.deleteID = (req,res) => {
     })
 }
 exports.findID = (req,res) => {
-    User.findById(req.params.id,(err,docs) =>{
+    User.findById(req.user._id,(err,docs) =>{
         res.send(docs)
     })
 }
-exports.login = (req,res) => {
-    return passport.authenticate('local')
+exports.findIDandUpdate = (req,res) => {
+    let participante = {
+        nombre: req.body.nombre,
+        nick: req.body.nick,
+        correo: req.body.correo,
+        whats: req.body.whats,
+    }
+    User.findByIdAndUpdate(req.user._id,participante,(err,docs) =>{
+        res.send(docs)
+    })
+    
 }

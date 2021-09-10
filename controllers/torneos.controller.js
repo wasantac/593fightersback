@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var Torneo = require("../collections/torneos.model");
-
+var User = require("../collections/user.model");
 exports.findAll = (req,res) => {
     Torneo.find({},'titulo descripcion fecha').sort('-fecha').exec((err,docs) =>{
         res.send(docs)
@@ -36,9 +36,29 @@ exports.updateParticipante = (req,res) => {
         correo: req.body.correo,
         whats: req.body.whats,
     }
-    Torneo.findByIdAndUpdate(req.params.id,{
-        "$push":{"participantes": participante}
-    },(err,docs) => {
-        res.send(docs)
+    Torneo.findOne({"participantes.nick":participante.nick,_id:req.params.id},(err,docs) =>{
+        if(docs){
+            res.send(false)
+        }else{
+            Torneo.findByIdAndUpdate(req.params.id,{
+                "$push":{"participantes": participante}
+            },(err,docs) => {
+                res.send(docs)
+            })
+        }
+
+    })
+
+}
+exports.findParticipante = (req,res) => {
+    User.findById(req.user._id,(err,docsUser) => {
+        Torneo.findOne({"participantes.nick":docsUser.nick,_id:req.params.id},(err,docs) =>{
+            if(docs){
+                res.send(false)
+            }else{
+                res.send(true)
+            }
+    
+        })
     })
 }

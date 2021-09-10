@@ -6,6 +6,7 @@ const passport = require("passport");
 router.get('/',userController.findAll);
 router.post('/',userController.create);
 router.delete('/:id',userController.deleteID);
-router.get('/:id',userController.findID);
+router.get('/id',passport.authenticate('jwt',{session:false}),userController.findID);
+router.put('/',passport.authenticate('jwt',{session:false}),userController.findIDandUpdate)
 
 module.exports = router;

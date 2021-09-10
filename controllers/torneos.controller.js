@@ -6,6 +6,11 @@ exports.findAll = (req,res) => {
         res.send(docs)
     })
 }
+exports.find3 = (req, res) =>{
+    Torneo.find({},'titulo descripcion fecha').sort('-fecha').limit(3).exec((err,docs) =>{
+        res.send(docs)
+    })
+}
 exports.findId = (req,res) => {
     Torneo.findById(req.params.id,(err,docs) =>{
         res.send(docs)

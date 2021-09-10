@@ -3,6 +3,7 @@ var router = express.Router();
 const torneoController = require('../controllers/torneos.controller');
 const passport = require("passport");
 router.get('/',torneoController.findAll);
+router.get('/home',torneoController.find3);
 router.post('/',torneoController.create);
 router.get('/:id/validar',passport.authenticate('jwt',{session:false}),torneoController.findParticipante);
 router.put('/:id',torneoController.updateParticipante);

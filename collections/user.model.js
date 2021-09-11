@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     nick: String,
     nombre: String,
     correo: String,
-    whats: String
+    whats: String,
+    admin: Boolean,
 
 },{timestamps:true})
 

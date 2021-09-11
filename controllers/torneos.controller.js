@@ -1,8 +1,9 @@
 var mongoose = require("mongoose");
 var Torneo = require("../collections/torneos.model");
+const { countDocuments } = require("../collections/user.model");
 var User = require("../collections/user.model");
 exports.findAll = (req,res) => {
-    Torneo.find({},'titulo descripcion fecha').sort('-fecha').exec((err,docs) =>{
+    Torneo.find({},'_id titulo descripcion fecha participantes').sort('-fecha').exec((err,docs) =>{
         res.send(docs)
     })
 }
@@ -30,6 +31,7 @@ exports.create = (req,res) => {
     res.send(req.body)
 }
 exports.deleteID = (req,res) => {
+    console.log(req.body)
     Torneo.findByIdAndDelete(req.params.id,(err,docs) => {
         res.send(docs)
     })
@@ -64,6 +66,16 @@ exports.findParticipante = (req,res) => {
                 res.send(true)
             }
     
+        })
+    })
+}
+exports.tamano = (req,res) => {
+    User.count({},function(err,count){
+        Torneo.count({},(err,countT) => {
+            res.json({
+                user: count,
+                torneo : countT
+            })
         })
     })
 }

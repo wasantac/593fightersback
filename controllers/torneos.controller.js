@@ -3,12 +3,12 @@ var Torneo = require("../collections/torneos.model");
 const { countDocuments } = require("../collections/user.model");
 var User = require("../collections/user.model");
 exports.findAll = (req,res) => {
-    Torneo.find({},'_id titulo descripcion fecha participantes').sort('-fecha').exec((err,docs) =>{
+    Torneo.find({},'_id titulo descripcion fecha participantes premio').sort('-fecha').exec((err,docs) =>{
         res.send(docs)
     })
 }
 exports.find3 = (req, res) =>{
-    Torneo.find({},'titulo descripcion fecha').sort('-fecha').limit(3).exec((err,docs) =>{
+    Torneo.find({},'titulo premio fecha').sort('-fecha').limit(3).exec((err,docs) =>{
         res.send(docs)
     })
 }

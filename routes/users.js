@@ -5,6 +5,7 @@ const passport = require("passport");
 /* GET users listing. */
 router.get('/',passport.authenticate('jwt-admin',{session:false}),userController.findAll);
 router.post('/',userController.create);
+router.put('/recuperar',userController.recoverPassword);
 router.delete('/:id',passport.authenticate('jwt-admin',{session:false}),userController.deleteID);
 router.get('/id',passport.authenticate('jwt',{session:false}),userController.findID);
 router.put('/',passport.authenticate('jwt',{session:false}),userController.findIDandUpdate)

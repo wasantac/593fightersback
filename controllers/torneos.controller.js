@@ -3,7 +3,7 @@ var Torneo = require("../collections/torneos.model");
 const { countDocuments } = require("../collections/user.model");
 var User = require("../collections/user.model");
 exports.findAll = (req,res) => {
-    Torneo.find({},'_id titulo descripcion fecha participantes premio').sort('-fecha').exec((err,docs) =>{
+    Torneo.find({}).sort('-fecha').exec((err,docs) =>{
         res.send(docs)
     })
 }
@@ -29,6 +29,18 @@ exports.create = (req,res) => {
     });
     nuevo.save()
     res.send(req.body)
+}
+exports.actualizarTorneo = (req,res) => {
+    Torneo.findByIdAndUpdate(req.body.id,{
+        titulo : req.body.titulo,
+        descripcion: req.body.descripcion,
+        juego : req.body.juego,
+        fecha : req.body.fecha,
+        premio: req.body.premio,
+        max: req.body.max
+    },(err,docs) => {
+        res.send(docs)
+    })
 }
 exports.deleteID = (req,res) => {
     console.log(req.body)
